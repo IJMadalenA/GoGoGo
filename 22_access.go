@@ -1,8 +1,8 @@
 package main
 
 import (
-	myPackage "../"
 	"fmt"
+	myPackage "myPackage"
 )
 
 func main() {
