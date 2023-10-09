@@ -9,5 +9,8 @@ type Employee struct {
 
 func main() {
 	e := Employee{}
-	fmt.Println("%v", e)
+	fmt.Printf("%v\n", e)
+	e.id = 1
+	e.name = "John"
+	fmt.Printf("%v\n", e)
 }
