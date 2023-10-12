@@ -33,3 +33,25 @@ func (SMSNotificationSender) GetSenderMethod() string {
 func (SMSNotificationSender) GetSenderChannel() string {
 	return "Twilio"
 }
+
+type EmailNotificacion struct {
+}
+
+func (EmailNotificacion) SendNotification() {
+	fmt.Println("Sending notification via Email")
+}
+
+func (EmailNotificacion) GetSender() ISender {
+	return EmailNotificationSender{}
+}
+
+type EmailNotificationSender struct {
+}
+
+func (EmailNotificationSender) GetSenderMethod() string {
+	return "Email"
+}
+
+func (EmailNotificationSender) GetSenderChannel() string {
+	return "SES"
+}
