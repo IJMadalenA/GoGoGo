@@ -128,6 +128,14 @@ func TestGetFullTimeEmployeeById(t *testing.T) {
 		if employee.Name != test.expectedEmployee.Name {
 			t.Errorf("Expected employee name to be %s, got %s", test.expectedEmployee.Name, employee.Name)
 		}
+
+		if employee.DNI != test.expectedEmployee.DNI {
+			t.Errorf("Expected employee DNI to be %s, got %s", test.expectedEmployee.DNI, employee.DNI)
+		}
+
+		if employee.id != test.expectedEmployee.id {
+			t.Errorf("Expected employee id to be %d, got %d", test.expectedEmployee.id, employee.id)
+		}
 	}
 	GetEmployeeById = originalGetEmployeeById
 	GetPersonByDNI = originalGetPersonByDNI
