@@ -46,3 +46,89 @@ func TestGetMax(t *testing.T) {
 		}
 	}
 }
+
+func TestFib(t *testing.T) {
+	tables := []struct {
+		a int
+		b int
+	}{
+		{1, 1},
+		{8, 21},
+		{10, 55},
+		{50, 12586269025},
+	}
+	for _, item := range tables {
+		fib := Fibonacci(item.a)
+		if fib != item.b {
+			t.Errorf("Fibonacci was incorrect, got: %d, want: %d.", fib, item.b)
+		}
+	}
+}
+
+func TestGetFullTimeEmployeeById(t *testing.T) {
+	table := []struct {
+		id               int
+		dni              string
+		mockFunc         func()
+		expectedEmployee FullTimeEmployee
+	}{
+		{
+			id:  1,
+			dni: "12345678",
+			mockFunc: func() {
+				GetEmployeeById = func(id int) (Employee, error) {
+					return Employee{
+						Person: Person{
+							Name: "Test",
+							Age:  30,
+						},
+						id:       1,
+						Position: "CEO",
+					}, nil
+				}
+				GetPersonByDNI = func(dni string) (Person, error) {
+					return Person{
+						Name: "Test",
+						Age:  30,
+						DNI:  "12345678",
+					}, nil
+				}
+			},
+			expectedEmployee: FullTimeEmployee{
+				Employee: Employee{
+					Person: Person{
+						Name: "Test",
+						Age:  30,
+					},
+					id:       1,
+					Position: "CEO",
+				},
+				Person: Person{
+					Name: "Test",
+					Age:  30,
+				},
+			},
+		},
+	}
+
+	originalGetEmployeeById := GetEmployeeById
+	originalGetPersonByDNI := GetPersonByDNI
+
+	for _, test := range table {
+		test.mockFunc()
+		employee, err := GetFullTimeEmployeeById(test.id, test.dni)
+		if err != nil {
+			t.Error(err)
+		}
+
+		if employee.Age != test.expectedEmployee.Age {
+			t.Errorf("Expected employee age to be %d, got %d", test.expectedEmployee.Age, employee.Age)
+		}
+
+		if employee.Name != test.expectedEmployee.Name {
+			t.Errorf("Expected employee name to be %s, got %s", test.expectedEmployee.Name, employee.Name)
+		}
+	}
+	GetEmployeeById = originalGetEmployeeById
+	GetPersonByDNI = originalGetPersonByDNI
+}
